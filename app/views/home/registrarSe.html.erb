@@ -1,0 +1,95 @@
+<section class="background-radial-gradient overflow-hidden">
+  <div class="d-flex justify-content-center justifycontainer px-4 py-5 px-md-5 text-center text-lg-start my-2">
+    <div class="col-lg-6 mb-5 mb-lg-0 position-relative">
+      <div class="card bg-glass">
+        <div class="card-body px-4 py-5 px-md-5">
+          <%= form_with(url: "/registrar", method: :post, local: true) do |form| %>
+
+            <div data-mdb-input-init class="form-outline mb-4">
+              <%= form.text_field :nome, id: "form3Example3", class: "form-control" %>
+              <%= form.label :nome, "Primeiro Nome", class: "form-label", for: "form3Example3" %>
+            </div>
+
+            <!-- Sobrenome -->
+            <div data-mdb-input-init class="form-outline mb-4">
+              <%= form.text_field :sobrenome, id: "form3Example3", class: "form-control" %>
+              <%= form.label :sobrenome, "Sobrenome", class: "form-label", for: "form3Example3" %>
+            </div>
+
+            <!-- CPF -->
+            <div data-mdb-input-init class="form-outline mb-4">
+              <%= form.text_field :cpf, id: "form3Example3", class: "form-control" %>
+              <%= form.label :cpf, "CPF", class: "form-label", for: "form3Example3" %>
+            </div>
+
+            <!-- Senha -->
+            <div data-mdb-input-init class="form-outline mb-4">
+              <%= form.password_field :senha, id: "form3Example4", class: "form-control" %>
+              <%= form.label :senha, "Senha", class: "form-label", for: "form3Example4" %>
+            </div>
+
+            <div class="mb-3">
+              <%= form.file_field :pdf, class: "form-control" %>
+              <%= form.label :pdf, "Documento com foto", class: "form-label" %>
+            </div>
+            <div class="row mb-4">
+              <div class="col-6">
+                <%= select_tag :agencia, options_for_select([['Agência', nil], ['01 - Ag. Teresina', 1], ['02 - Fortaleza', 2]], selected: nil), class: 'form-select', aria: { label: 'Default select example' } %>
+              </div>
+              <div class="col-6">
+                <%= select_tag :tipo_conta, options_for_select([['Tipo de Conta', nil], ['Conta Corrente', 1], ['Conta Poupança', 2]], selected: nil), class: 'form-select', aria: { label: 'Default select example' } %>
+              </div>
+            </div>
+            <%= form.submit "Registrar", data: { mdb_button_init: true, mdb_ripple_init: true }, class: "btn btn-primary btn-block" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<% if params[:erro] == '2' %>
+  <div class="modal" tabindex="-1" id="modalErroRegistro">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Você esqueceu algum campo!</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Preencha todos os campos para prosseguir</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var myModal = new bootstrap.Modal(document.getElementById('modalErroRegistro'));
+    myModal.show();
+  </script>
+<% end %>
+<% if params[:erro] == '1' %>
+  <div class="modal" tabindex="-1" id="modalErroRegistro">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Você já é nosso cliente</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Identificamos que esse CPF já consta em nosso banco.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var myModal = new bootstrap.Modal(document.getElementById('modalErroRegistro'));
+    myModal.show();
+  </script>
+<% end %>

@@ -1,0 +1,105 @@
+<section class="background-radial-gradient overflow-hidden">
+  <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
+    <div class="row gx-lg-5 align-items-center mb-5">
+      <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
+        <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
+          Banco Digital <br />
+        </h1>
+      </div>
+
+      <div class="col-lg-6 mb-5 mb-lg-0 position-relative">
+
+        <div class="card bg-glass">
+          <div class="card-body px-4 py-5 px-md-5">
+            <%= form_with(url: "/authenticar", method: :post) do |form| %>
+                <div class="form-outline mb-4">
+                  <%= form.text_field :cpf, class: "form-control", id: "form3Example3" %>
+                  <%= form.label :cpf, "CPF", class: "form-label" %>
+                </div>
+
+                <div class="form-outline mb-4">
+                  <%= form.password_field :senha, class: "form-control", id: "form3Example4" %>
+                  <%= form.label :senha, "Senha", class: "form-label" %>
+                </div>
+
+                <%= form.submit "Entrar", class: "btn btn-primary btn-block mb-4" %>
+            <% end %>
+            <div class="text-center">
+              <p>Ainda não tem uma conta? <a id="link-registrarSe" href="/registrarSe">Registre-se</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<% if params[:registro] == '1' %>
+  <div class="modal" tabindex="-1" id="modalRegistroOk">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Tudo Certo!</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Você foi registrado, entre com seu CPF e senha criada.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-bs-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var myModal = new bootstrap.Modal(document.getElementById('modalRegistroOk'));
+    myModal.show();
+  </script>
+<% end %>
+<% if params[:erro] == '1' %>
+  <div class="modal" tabindex="-1" id="modalRegistroOk">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Erro</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Você não tem uma conta ainda, entre em "Registrar-se"</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var myModal = new bootstrap.Modal(document.getElementById('modalRegistroOk'));
+    myModal.show();
+  </script>
+<% end %>
+<% if params[:erro] == '2' %>
+  <div class="modal" tabindex="-1" id="modalRegistroOk">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Erro</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Os campos estão vazios</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var myModal = new bootstrap.Modal(document.getElementById('modalRegistroOk'));
+    myModal.show();
+  </script>
+<% end %>
+

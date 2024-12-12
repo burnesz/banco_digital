@@ -1,0 +1,76 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold ls-tight" href="/home">Banco Digital</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-link active" aria-current="page" href="/home">Home</a>
+        <a class="nav-link" href="#">Conta</a>
+        <a class="nav-link" href="/extrato">Extrato</a>
+        <a class="nav-link ms-auto" href="/sair">Sair</a>
+      </div>
+    </div>
+  </div>
+</nav>
+<section class="background-radial-gradient overflow-hidden background-app">
+    <div class="container mx-0">
+        <div class="row">
+            <div class="m-5 col card bg-glass">
+                <div class="card-body px-4 py-5 px-md-5">
+                    <h1 class="my-5 display-5 fw-bold ls-tight" style="color: #11111">
+                        Olá, Cliente<br/>
+                    </h1>
+                    <h1 class="my-5 display-5 fw-bold ls-tight" style="color: #11111">
+                        Saldo atual R$50,00<br/>
+                    </h1>
+                </div>
+            </div>
+            <div class="m-5 col card bg-glass">
+                <div class="card-body px-4 py-5 px-md-0">
+                    <h1 class="my-5 display-5 fw-bold ls-tight" style="color: #11111">
+                        Extrato<br/>
+                    </h1>
+                    <table class="table table-light table-striped">
+                        <thead>
+                            <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">First</th>
+                            <th scope="col">Last</th>
+                            <th scope="col">Handle</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            <th scope="row">1</th>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+                            </tr>
+                            <tr>
+                            <th scope="row">2</th>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                            <td>@fat</td>
+                            </tr>
+                            <tr>
+                            <th scope="row">3</th>
+                            <td colspan="2">Larry the Bird</td>
+                            <td>@twitter</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="m-5 col card bg-glass">
+                <div class="card-body px-4 py-5 px-md-5">
+                    <h1 class="my-5 display-5 fw-bold ls-tight" style="color: #11111">
+                        Pix<br/>
+                    </h1>
+                    <button type="button" class="btn p-3 rounded-circle btn-pix"><%= image_tag("pix-ico.png", alt: "Pix Icon", width: "80", height: "80") %></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
