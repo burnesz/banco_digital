@@ -23,5 +23,7 @@ module BancoDigital
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    config.time_zone = 'Brasilia' # ou outro fuso horário desejado
+    config.active_record.default_timezone = :local # Salvar no fuso horário local
   end
 end

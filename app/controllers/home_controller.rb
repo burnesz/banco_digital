@@ -15,23 +15,39 @@ class HomeController < ApplicationController
 
       cliente = Cliente.find_by(cpf: cpf)
 
-      if cliente
-         redirect_to "/registrarSe?erro=1"
+      if Cliente.exists?(cpf: cpf)
+         flash[:title] = 'Você já é nosso cliente'
+         flash[:message] = 'Entre com seu  CPF e senha criada anteriormente'
+         flash[:classe] = 'danger'
+         redirect_to registrarSe_path
+         return
+      end
 
-      elsif nome && sobrenome && cpf && senha && agencia_id && tipo_conta_id
+      if valid_params?(nome, sobrenome, cpf, senha, agencia_id, tipo_conta_id)
          agencia = Agencia.find_by(id: agencia_id)
          tipo_conta = TipoConta.find_by(id: tipo_conta_id)
 
-         cliente_new = Cliente.new(nome: nome + ' ' + sobrenome, cpf: cpf, senha: senha, agencia: agencia, pdf: pdf)
-         cliente_new.save
-
-         conta = Conta.new(numeroConta: cpf.slice(0, 5), idCliente: cliente.id, idTipoConta: tipo_conta.id, idAgencia: agencia.id, saldo: 0.00)
+         cliente_new = Cliente.create(nome: "#{nome} #{sobrenome}", cpf: cpf, senha: senha, agencia: agencia, pdf: pdf)
+         
+         conta = Conta.create(numeroConta: "#{cpf.slice(0, 5)}-#{tipo_conta_id}", idCliente: cliente_new.id, idTipoConta: tipo_conta.id, idAgencia: agencia.id, saldo: 0.00)
          conta.save
 
-         redirect_to root_path+'?registro=1'
+         #redirect_to root_path+'?registro=1'
+         flash[:title] = 'Registro feito com sucesso'
+         flash[:message] = 'Entre com seu CPF e senha'
+         flash[:classe] = 'success'
+         redirect_to root_path
       else
-         redirect_to "/registrarSe?erro=2"
+         flash[:title] = 'Erro'
+         flash[:message] = 'Preencha todos os campos para prosseguir'
+         flash[:classe] = 'danger'
+         redirect_to registrarSe_path
       end
 
    end
+
+   def valid_params?(nome, sobrenome, cpf, senha, agencia_id, tipo_conta_id)
+      nome.present? && sobrenome.present? && cpf.present? && senha.present? && agencia_id > 0 && tipo_conta_id > 0
+   end
+   
 end

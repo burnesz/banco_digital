@@ -6,13 +6,20 @@ class AuthController < ApplicationController
 
         cliente = Cliente.find_by(cpf: cpf)
 
-        if cliente && cliente.senha === senha
+        if cliente.present? && cliente.senha === senha
             session[:id] = cliente.id
-            redirect_to "/home"
+            session[:nome] = cliente.nome
+            redirect_to home_path
         elsif cpf.blank? || senha.blank?
-            redirect_to root_path+'?erro=2'
+            flash[:title] = 'Espaço em branco'
+            flash[:message] = 'Preencha CPF e senha para entrar'
+            flash[:classe] = 'danger'
+            redirect_to root_path
         else
-            redirect_to root_path+'?erro=1'
+            flash[:title] = 'Erro'
+            flash[:message] = 'CPF ou senha incorretos'
+            flash[:classe] = 'danger'
+            redirect_to root_path
         end
      end
 

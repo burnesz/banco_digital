@@ -20,10 +20,10 @@
             <div class="m-5 col card bg-glass">
                 <div class="card-body px-4 py-5 px-md-5">
                     <h1 class="my-5 display-5 fw-bold ls-tight" style="color: #11111">
-                        Olá, Cliente<br/>
+                        Olá, <%= session[:nome].split(' ').first %><br/>
                     </h1>
                     <h1 class="my-5 display-5 fw-bold ls-tight" style="color: #11111">
-                        Saldo atual R$50,00<br/>
+                        Saldo atual R$<%= (cliente = Conta.find_by(idCliente: session[:id]))? '%.2f' % cliente.saldo : '0.00' %><br/>
                     </h1>
                 </div>
             </div>

@@ -47,49 +47,6 @@
     </div>
   </div>
 </section>
-<% if params[:erro] == '2' %>
-  <div class="modal" tabindex="-1" id="modalErroRegistro">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Você esqueceu algum campo!</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <p>Preencha todos os campos para prosseguir</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">OK</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    var myModal = new bootstrap.Modal(document.getElementById('modalErroRegistro'));
-    myModal.show();
-  </script>
-<% end %>
-<% if params[:erro] == '1' %>
-  <div class="modal" tabindex="-1" id="modalErroRegistro">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Você já é nosso cliente</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <p>Identificamos que esse CPF já consta em nosso banco.</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">OK</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    var myModal = new bootstrap.Modal(document.getElementById('modalErroRegistro'));
-    myModal.show();
-  </script>
+<% if flash.present? %>
+  <%= render 'shared/modal', title: flash[:title], mensagem: flash[:message], classe: flash[:classe] %>
 <% end %>
