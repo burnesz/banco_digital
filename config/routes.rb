@@ -8,9 +8,13 @@ Rails.application.routes.draw do
   get "/registrarSe", to: "home#registrarSe"
   get "/home", to: "app#home"
   get "/extrato", to: "app#extrato"
-  post "/authenticar", to: "auth#authenticar"
   get "/sair", to: "auth#sair"
+  post "/authenticar", to: "auth#authenticar"
   post "/registrar", to: "home#registrar"
+  post '/buscaCliente', to: 'app#buscaCliente'
+  post '/fazer_pix', to: 'app#fazer_pix'
+
+
   
   # Defines the root path route ("/")
   # root "posts#index"

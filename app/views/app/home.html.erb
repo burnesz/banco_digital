@@ -35,29 +35,29 @@
                     <table class="table table-light table-striped">
                         <thead>
                             <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">First</th>
-                            <th scope="col">Last</th>
-                            <th scope="col">Handle</th>
+                                <th scope="col">#</th>
+                                <th scope="col">First</th>
+                                <th scope="col">Last</th>
+                                <th scope="col">Handle</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>@mdo</td>
                             </tr>
                             <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
+                                <th scope="row">2</th>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>@fat</td>
                             </tr>
                             <tr>
-                            <th scope="row">3</th>
-                            <td colspan="2">Larry the Bird</td>
-                            <td>@twitter</td>
+                                <th scope="row">3</th>
+                                <td colspan="2">Larry the Bird</td>
+                                <td>@twitter</td>
                             </tr>
                         </tbody>
                     </table>
@@ -68,9 +68,57 @@
                     <h1 class="my-5 display-5 fw-bold ls-tight" style="color: #11111">
                         Pix<br/>
                     </h1>
-                    <button type="button" class="btn p-3 rounded-circle btn-pix"><%= image_tag("pix-ico.png", alt: "Pix Icon", width: "80", height: "80") %></button>
+                    <button type="button" class="btn p-3 rounded-circle btn-pix" data-bs-toggle="modal" data-bs-target="#modalPix"><%= image_tag("pix-ico.png", alt: "Pix Icon", width: "80", height: "80") %></button>
                 </div>
+            </div>
+            <div class="modal fade" id="modalPix" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Transferência Pix</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                <% unless flash[:nome_pix] %>
+                    <%= form_with(url: "/buscaCliente", method: :post) do |form| %>
+                        <div class="form-outline mb-4">
+                            <%= form.text_field :cpf, class: "form-control", id: "form-pix" %>
+                            <%= form.label :cpf, "CPF do destinatário", class: "form-label" %>
+                        </div>
+                        <div class="form-outline mb-4">
+                            <div id="resultado-busca" class="text-success mt-3"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <%= form.submit "Buscar", class: "btn btn-primary btn-block mb-4", id: "buscar-cpf" %>
+                    </div>
+                </div>
+                    <% end %>
+                <% else %>
+                <h1><%= flash[:nome_pix] %></h1>
+                    <%= form_with(url: "/fazer_pix", method: :post) do |form| %>
+                    <%= form.hidden_field :cpf, value: flash[:cpf] %>
+                        <div class="form-outline mb-4">
+                            <%= form.number_field :valor, class: "form-control", id: "form-pix", step: "0.01", min: "0.00" %>
+                            <%= form.label :valor, "Valor da transação (R$)", class: "form-label" %>
+                        </div>
+                        <div class="modal-footer">
+                            <%= form.submit "Enviar", class: "btn btn-primary btn-block mb-4", id: "buscar-cpf" %>
+                        </div>
+                    <% end %>
+                <% end %>
+            </div>
             </div>
         </div>
     </div>
 </section>
+<% if flash[:nome_pix] %>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const modalPix = new bootstrap.Modal(document.getElementById('modalPix'));
+      modalPix.show();
+    });
+  </script>
+<% elsif flash[:message] %>
+  <%= render 'shared/modal', title: flash[:title], mensagem: flash[:message], classe: flash[:classe] %>
+<% end %>
