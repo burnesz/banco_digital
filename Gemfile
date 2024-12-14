@@ -6,6 +6,7 @@ gem 'carrierwave', '~> 2.0'
 
 gem 'kaminari'
 
+gem 'prawn-rails'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.1.5"

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_12_13_030321) do
+ActiveRecord::Schema[7.1].define(version: 2024_12_14_212942) do
   create_table "agencias", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "nome"
     t.string "endereco"
@@ -41,7 +41,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_12_13_030321) do
   create_table "extratos", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "idRemetente"
     t.integer "idDestinatario"
-    t.decimal "valor", precision: 10
+    t.float "valor"
     t.string "tipo"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
