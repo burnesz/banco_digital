@@ -5,10 +5,12 @@ class AuthController < ApplicationController
         senha = params[:senha]
 
         cliente = Cliente.find_by(cpf: cpf)
+        conta = Conta.find_by(idCliente: cliente.id, idTipoConta: 1)
 
         if cliente.present? && cliente.senha === senha
             session[:id] = cliente.id
             session[:nome] = cliente.nome
+            session[:id_conta] = conta.id
             redirect_to home_path
         elsif cpf.blank? || senha.blank?
             flash[:title] = 'Espaço em branco'
