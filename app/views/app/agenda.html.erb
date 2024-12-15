@@ -16,25 +16,101 @@
   </div>
 </nav>
 <section class="background-radial-gradient overflow-hidden background-app">
-      <div class="container-fluid mx-0">
-            <div class="m-5 card bg-glass me-5">
-                <div class="card-body px-4 py-5 px-md-5">
-                  <div class="row d-flex justify-content-between mb-3">
-                    <div class="col-11 ">
-                      <h1 class="my-2 display-5 fw-bold ls-tight" style="color: #11111">Agendamentos</h1>
-                    </div>
-                    <div class="col-1">
-                      <%= link_to "CRIAR", pdf_extrato_path(categoria: params[:categoria], search: params[:search]), target: "_blank", class:"btn btn-outline-dark" %>
-                    </div>
-                  <div class="row">
-                    <div class="col-8">
-                    </div>
-                  </div>
-                  </div><br><br>
-                  <div class="row">
-                  </div>
-                </div>
-            </div>
+  <div class="container-fluid mx-0">
+    <div class="m-5 card bg-glass me-5">
+      <div class="card-body px-4 py-5 px-md-5">
+        <div class="row d-flex justify-content-between mb-3">
+          <div class="col-11">
+            <h1 class="my-2 display-5 fw-bold ls-tight" style="color: #11111">Agendamentos</h1>
+          </div>
+          <div class="col-1">
+            <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">NOVO</button>
+          </div>
         </div>
+        <div class="row">
+          <div class="col-8">
+          </div>
+        </div>
+        <br><br>
+        <div class="row">
+          <table class="table table-light table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Data</th>
+                <th scope="col">Descrição</th>
+                <th scope="col">Valor</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+            <% @agendas.each do |agenda| %>
+              <tr>
+              <td><%= agenda.data.strftime("%d/%m/%Y") %></td>
+              <td><%= agenda.descricao %></td>
+              <td><%= agenda.valor %></td>
+              <td>
+              <div class="row">
+                <div class="col-6">
+                  <%= link_to "Editar", agenda_path(id: agenda.id, data: agenda.data, descricao: agenda.descricao, valor: agenda.valor, acao: 'editar'), class:"btn btn-outline-warning" %>
+                </div>
+                <div class="col-6">
+                  <%= link_to "Delete", agenda_path(id: agenda.id, data: agenda.data, descricao: agenda.descricao, valor: agenda.valor, acao: 'excluir'), class: "btn btn-outline-danger" %></div>
+              </div>
+              </td>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
+  </div>
 </section>
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Novo agendamento</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <%= form_with(url: agendamento_path, method: :post) do |form| %>
+      <div class="modal-body">
+          <div class="form-outline mb-4">
+              <%= form.hidden_field :acao, value: params[:acao] %>
+              <%= form.hidden_field :id, value: params[:id] %>
+              <%= form.date_field :data, value: params[:data], class: "form-control" %>
+              <%= form.label :data, "Data de pagamento", class: "form-label" %>
+          </div>
+          <div class="form-outline mb-4">
+              <%= form.text_field :descricao, value: params[:descricao], class: "form-control" %>
+              <%= form.label :descricao, "Descrição", class: "form-label" %>
+          </div>
+          <div class="form-outline mb-4">
+              <%= form.number_field :valor, value: params[:valor], class: "form-control" %>
+              <%= form.label :valor, "Valor", class: "form-label" %>
+          </div>
+      </div>
+      <div class="modal-footer">
+      <% unless params[:acao] == 'excluir' %>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        <%= form.submit "Salvar", class: "btn btn-primary" %>
+      <% else %>
+        <%= form.submit "Excluir", class: "btn btn-danger" %>
+      <% end %>
+      </div>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<% if flash[:message] %>
+  <%= render 'shared/modal', title: flash[:title], mensagem: flash[:message], classe: flash[:classe] %>
+<% end %>
+<% if params[:data] %>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const modalPix = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+      modalPix.show();
+    });
+  </script>
+<% end %>

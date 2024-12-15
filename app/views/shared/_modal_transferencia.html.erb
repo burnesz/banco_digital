@@ -1,0 +1,10 @@
+<%= form_with(url: rota, method: :post) do |form| %>
+<%= form.hidden_field :cpf, value: flash[:cpf] %>
+    <div class="form-outline mb-4">
+        <%= form.number_field :valor, class: "form-control", id: "form-pix", step: "0.01", min: "0.00" %>
+        <%= form.label :valor, "Valor da transação (R$)", class: "form-label" %>
+    </div>
+    <div class="modal-footer">
+        <%= form.submit "Enviar", class: "btn btn-primary btn-block mb-4", id: "buscar-cpf" %>
+    </div>
+<% end %>

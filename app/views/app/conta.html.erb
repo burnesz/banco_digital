@@ -30,7 +30,8 @@
                         <%= session[:nome]%>
                       </h1>
                     </div>
-                    <div class="col-4">
+                    <div class="col-4 mt-3">
+                      <%= link_to "Documento", @cliente.pdf.url, class:"btn btn-outline-dark" %>
                     </div>
                   </div>
                   <div class="row">
@@ -60,7 +61,7 @@
                     </div>
                     <div class="col-4">
                       <h1 class="my-2 ls-tight" style="color: #11111">
-                          <%= @agencia.id.to_s + ' -s ' + @agencia.nome %>
+                          <%= @agencia.id.to_s + ' - ' + @agencia.nome %>
                       </h1>
                     </div>
                   </div>

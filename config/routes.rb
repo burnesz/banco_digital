@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   get 'csv_extrato', to: 'app#csv_extrato'
   get 'agenda', to: 'app#agenda'
   post 'agendamento', to: 'app#agendamento'
+  post 'fazer_deposito', to: 'app#fazer_deposito'
 
   
   # Defines the root path route ("/")

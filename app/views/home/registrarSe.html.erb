@@ -3,7 +3,7 @@
     <div class="col-lg-6 mb-5 mb-lg-0 position-relative">
       <div class="card bg-glass">
         <div class="card-body px-4 py-5 px-md-5">
-          <%= form_with(url: "/registrar", method: :post, local: true) do |form| %>
+          <%= form_with(url: registrar_path, method: :post, local: true) do |form| %>
 
             <div data-mdb-input-init class="form-outline mb-4">
               <%= form.text_field :nome, id: "form3Example3", class: "form-control" %>
@@ -27,17 +27,15 @@
               <%= form.password_field :senha, id: "form3Example4", class: "form-control" %>
               <%= form.label :senha, "Senha", class: "form-label", for: "form3Example4" %>
             </div>
-
-            <div class="mb-3">
-              <%= form.file_field :pdf, class: "form-control" %>
-              <%= form.label :pdf, "Documento com foto", class: "form-label" %>
-            </div>
             <div class="row mb-4">
               <div class="col-6">
-                <%= select_tag :agencia, options_for_select([['Agência', nil], ['01 - Ag. Teresina', 1], ['02 - Fortaleza', 2]], selected: nil), class: 'form-select', aria: { label: 'Default select example' } %>
+                <%= select_tag :agencia, options_for_select([['Escolha', nil], ['01 - Ag. Teresina', 1], ['02 - Fortaleza', 2]], selected: nil), class: 'form-select', aria: { label: 'Default select example' } %>
+                <%= form.label :agencia, "Agência", class: "form-label", for: "form3Example4" %>
+
               </div>
               <div class="col-6">
-                <%= select_tag :tipo_conta, options_for_select([['Tipo de Conta', nil], ['Conta Corrente', 1], ['Conta Poupança', 2]], selected: nil), class: 'form-select', aria: { label: 'Default select example' } %>
+                <%= form.file_field :pdf, class: "form-control", accept: "application/pdf" %>
+                <%= form.label :pdf, "Documento com foto", class: "form-label" %>
               </div>
             </div>
             <%= form.submit "Registrar", data: { mdb_button_init: true, mdb_ripple_init: true }, class: "btn btn-primary btn-block" %>

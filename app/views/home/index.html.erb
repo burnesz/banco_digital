@@ -22,6 +22,10 @@
                   <%= form.label :senha, "Senha", class: "form-label" %>
                 </div>
 
+                <div class="form-outline mb-4">
+                <%= select_tag :tipo_conta, options_for_select([['Tipo de Conta', nil], ['Conta Corrente', 1], ['Conta Poupança', 2]], selected: nil), class: 'form-select', aria: { label: 'Default select example' } %>
+                </div>
+
                 <%= form.submit "Entrar", class: "btn btn-primary btn-block mb-4" %>
             <% end %>
             <div class="text-center">

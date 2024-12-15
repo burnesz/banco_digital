@@ -1,8 +1,36 @@
 class AppController < ApplicationController
     before_action :verificar_autenticacao
     def agendamento
+        if params[:acao] == ''
+            begin
+                Agenda.create!(data: params[:data], descricao: params[:descricao], valor: params[:valor], id_conta: session[:id_conta])    
+            rescue ActiveRecord::RecordInvalid => e
+                flash[:title] = 'Erro'
+                flash[:message] = 'Preencha todos os campos'
+                flash[:classe] = 'danger'
+            ensure
+                redirect_to agenda_path
+            end
+        elsif params[:acao] == 'editar'
+            agenda = Agenda.find_by(id: params[:id])
+            begin
+                agenda = Agenda.find_by(id: params[:id])
+                agenda.update!(data: params[:data], descricao: params[:descricao], valor: params[:valor]) 
+            rescue ActiveRecord::RecordInvalid => e
+                flash[:title] = 'Erro'
+                flash[:message] = 'Algo deu errado'
+                flash[:classe] = 'danger'
+            ensure
+                redirect_to agenda_path
+            end
+        elsif params[:acao] == 'excluir'
+            agenda = Agenda.find_by(id: params[:id])
+            agenda.destroy
+            redirect_to agenda_path
+        end
     end
     def agenda
+        @agendas = Agenda.where('agendas.id_conta = ?', session[:id_conta]).all.page(params[:page]).per(5)
     end
     def pdf_extrato
         if params[:categoria]
@@ -51,7 +79,11 @@ class AppController < ApplicationController
     end
 
     def home
+
         @extratos = all_extratos(3)
+        @conta = Conta.find(session[:id_conta])
+        @tipo_conta = TipoConta.find(@conta.idTipoConta)
+
     end
     
     def conta
@@ -75,9 +107,8 @@ class AppController < ApplicationController
     def buscaCliente
         cliente = Cliente.find_by(cpf: params[:cpf])
         if cliente.present? && cliente.id != session[:id]
-            @nome_pix = cliente.nome
             flash[:cpf] = params[:cpf]
-            render :home
+            redirect_to home_path(nome_pix: cliente.nome)
         else
             flash[:title] = 'Erro'
             flash[:message] = 'CPF não encontrado'
@@ -93,8 +124,8 @@ class AppController < ApplicationController
         conta_remetente = Conta.joins(:cliente).where(cliente: { id: session[:id] }, idTipoConta: 1).first
 
         if conta_remetente.saldo >= valor
-            conta_destino = Conta.joins(:cliente).where(cliente: { cpf: cpf }, idTipoConta: 1).first
             ActiveRecord::Base.transaction do
+                conta_destino = Conta.joins(:cliente).where(cliente: { cpf: cpf }, idTipoConta: 1).first
                 conta_remetente.update!(saldo: conta_remetente.saldo - valor)
                 conta_destino.update!(saldo: conta_destino.saldo + valor)
 
@@ -107,6 +138,28 @@ class AppController < ApplicationController
             flash[:classe] = 'danger'
             redirect_to home_path
         end
+    end
+
+    def fazer_deposito
+        valor = params[:valor].to_f
+        conta_remetente = Conta.joins(:cliente).where(cliente: { id: session[:id] }, idTipoConta: 1).first
+
+        if conta_remetente.saldo >= valor
+            ActiveRecord::Base.transaction do
+                conta_destino = Conta.joins(:cliente).where(cliente: { id: session[:id] }, idTipoConta: 2).first
+                conta_remetente.update!(saldo: conta_remetente.saldo - valor)
+                conta_destino.update!(saldo: conta_destino.saldo + valor)
+
+                Extrato.create!(idRemetente: conta_remetente.id, idDestinatario: conta_destino.id, valor: valor, tipo: 'E')
+            end
+            redirect_to home_path
+        else
+            flash[:title] = 'Erro'
+            flash[:message] = 'Você não tem saldo suficiente'
+            flash[:classe] = 'danger'
+            redirect_to home_path
+        end
+        
     end
     private
     def verificar_autenticacao
@@ -141,9 +194,9 @@ class AppController < ApplicationController
         if params[:categoria] == '1'
             all_extratos.where('extratos.created_at > ? AND extratos.created_at < ?', converte_data(params[:search])+' 00:00:00.000000', converte_data(params[:search])+' 23:59:59.999999').page(params[:page]).per(5)
         elsif params[:categoria] == '2'
-            all_extratos.where('cr.nome LIKE ?', "%#{params[:search]}%").page(params[:page]).per(5)
+            all_extratos.where('LOWER(cr.nome) LIKE LOWER(?)', "%#{params[:search]}%").page(params[:page]).per(5)
         elsif params[:categoria] == '3'
-            all_extratos.where('cd.nome LIKE ?', "%#{params[:search]}%").page(params[:page]).per(5)
+            all_extratos.where('LOWER(cd.nome) LIKE LOWER(?)', "%#{params[:search]}%").page(params[:page]).per(5)
         elsif params[:categoria] == '4'
             all_extratos.where('extratos.valor = ?',params[:search]).page(params[:page]).per(5)
         end

@@ -10,7 +10,6 @@ class HomeController < ApplicationController
       cpf = params[:cpf]
       senha = params[:senha]
       agencia_id = params[:agencia].to_i
-      tipo_conta_id = params[:tipo_conta].to_i
       pdf = params[:pdf]
 
       cliente = Cliente.find_by(cpf: cpf)
@@ -23,14 +22,16 @@ class HomeController < ApplicationController
          return
       end
 
-      if valid_params?(nome, sobrenome, cpf, senha, agencia_id, tipo_conta_id)
+      if valid_params?(nome, sobrenome, cpf, senha, agencia_id)
          agencia = Agencia.find_by(id: agencia_id)
-         tipo_conta = TipoConta.find_by(id: tipo_conta_id)
 
          cliente_new = Cliente.create(nome: "#{nome} #{sobrenome}", cpf: cpf, senha: senha, agencia: agencia, pdf: pdf)
          
-         conta = Conta.create(numeroConta: "#{cpf.slice(0, 5)}-#{tipo_conta_id}", idCliente: cliente_new.id, idTipoConta: tipo_conta.id, idAgencia: agencia.id, saldo: 0.00)
-         conta.save
+         conta_c = Conta.create(numeroConta: "#{cpf.slice(0, 5)}-1", idCliente: cliente_new.id, idTipoConta: 1, idAgencia: agencia.id, saldo: 0.00)
+         conta_c.save
+         conta_p = Conta.create(numeroConta: "#{cpf.slice(0, 5)}-2", idCliente: cliente_new.id, idTipoConta: 2, idAgencia: agencia.id, saldo: 0.00)
+         conta_p.save
+
 
          flash[:title] = 'Registro feito com sucesso'
          flash[:message] = 'Entre com seu CPF e senha'
@@ -45,8 +46,8 @@ class HomeController < ApplicationController
 
    end
 
-   def valid_params?(nome, sobrenome, cpf, senha, agencia_id, tipo_conta_id)
-      nome.present? && sobrenome.present? && cpf.present? && senha.present? && agencia_id > 0 && tipo_conta_id > 0
+   def valid_params?(nome, sobrenome, cpf, senha, agencia_id)
+      nome.present? && sobrenome.present? && cpf.present? && senha.present? && agencia_id > 0
    end
    
 end

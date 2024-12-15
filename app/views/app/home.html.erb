@@ -1,3 +1,5 @@
+
+
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
     <a class="navbar-brand fw-bold ls-tight" href="/home">Banco Digital</a>
@@ -23,8 +25,9 @@
                     <h1 class="my-5 display-5 fw-bold ls-tight" style="color: #11111">
                         Olá, <%= session[:nome].split(' ').first %><br/>
                     </h1>
+                    <span><%= @tipo_conta.descricao %></span><br><span><%= @conta.numeroConta %></span>
                     <h1 class="my-5 display-5 fw-bold ls-tight" style="color: #11111">
-                        Saldo atual R$<%= (cliente = Conta.find_by(idCliente: session[:id]))? '%.2f' % cliente.saldo : '0.00' %><br/>
+                        Saldo atual R$<%= @conta.saldo.present? ? '%.2f' % @conta.saldo : '0.00' %><br/>
                     </h1>
                 </div>
             </div>
@@ -66,10 +69,18 @@
             </div>
             <div class="m-5 col-10 col-lg-3 card bg-glass">
                 <div class="card-body px-4 py-5 px-md-5">
-                    <h1 class="my-5 display-5 fw-bold ls-tight" style="color: #11111">
-                        Pix<br/>
-                    </h1>
-                    <button type="button" class="btn p-3 rounded-circle btn-pix" data-bs-toggle="modal" data-bs-target="#modalPix"><%= image_tag("pix-ico.png", alt: "Pix Icon", width: "80", height: "80") %></button>
+                    <div class="row">
+                        <h1 class="my-5 display-5 fw-bold ls-tight" style="color: #11111">
+                            Pix<br/>
+                        </h1>
+                        <button type="button" class="btn p-3 btn-pix" data-bs-toggle="modal" data-bs-target="#modalPix"><%= image_tag("pix-ico.png", alt: "Pix Icon", width: "30", height: "30") %></button>
+                    </div>
+                    <div class="row">
+                        <h1 class="my-5 display-5 fw-bold ls-tight" style="color: #11111">
+                            Depósito<br/>
+                        </h1>
+                        <button type="button" class="btn p-3 btn-pix" data-bs-toggle="modal" data-bs-target="#modalDeposito"><%= image_tag("porco-ico.png", alt: "Porco Icon", width: "30", height: "30") %></button>
+                    </div>
                 </div>
             </div>
             <div class="modal fade" id="modalPix" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -77,10 +88,10 @@
                 <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">Transferência Pix</h1>
-                    <button type="button"ex class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                <% unless @nome_pix %>
+                <% unless params[:nome_pix] %>
                     <%= form_with(url: "/buscaCliente", method: :post) do |form| %>
                         <div class="form-outline mb-4">
                             <%= form.text_field :cpf, class: "form-control", id: "form-pix" %>
@@ -96,24 +107,28 @@
                 </div>
                     <% end %>
                 <% else %>
-                <h1><%= @nome_pix %></h1>
-                    <%= form_with(url: "/fazer_pix", method: :post) do |form| %>
-                    <%= form.hidden_field :cpf, value: flash[:cpf] %>
-                        <div class="form-outline mb-4">
-                            <%= form.number_field :valor, class: "form-control", id: "form-pix", step: "0.01", min: "0.00" %>
-                            <%= form.label :valor, "Valor da transação (R$)", class: "form-label" %>
-                        </div>
-                        <div class="modal-footer">
-                            <%= form.submit "Enviar", class: "btn btn-primary btn-block mb-4", id: "buscar-cpf" %>
-                        </div>
-                    <% end %>
+                <h1><%= params[:nome_pix] %></h1>
+                    <%= render 'shared/modal_transferencia', rota: fazer_pix_path %>
                 <% end %>
             </div>
+            </div>
+            <div class="modal fade" id="modalDeposito" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Depósito na Poupança</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                    <div class="modal-body">
+                        <%= render 'shared/modal_transferencia', rota: fazer_deposito_path %>
+                    </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
-<% if @nome_pix %>
+<% if params[:nome_pix] %>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       const modalPix = new bootstrap.Modal(document.getElementById('modalPix'));

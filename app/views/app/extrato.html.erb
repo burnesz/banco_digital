@@ -51,10 +51,12 @@
                         </thead>
                         <tbody>
                         <% @extratos.each do |extrato| %>
+                          <% descricao_conta_remetente = TipoConta.find(Conta.find(extrato.idRemetente).idTipoConta).descricao %>
+                          <% descricao_conta_destinatario = TipoConta.find(Conta.find(extrato.idDestinatario).idTipoConta).descricao %>
                             <tr>
                             <td><%= extrato.data.strftime("%d/%m/%Y %H:%M:%S") %></td>
-                            <td><%= extrato.nome_remetente %></td>
-                            <td><%= extrato.nome_destinatario %></td>
+                            <td><%= "#{extrato.nome_remetente}(#{descricao_conta_remetente})" %></td>
+                            <td><%= "#{extrato.nome_destinatario}(#{descricao_conta_destinatario})" %></td>
                             <td><%= extrato.valor %></td>
                             </tr>
                         <% end %>
