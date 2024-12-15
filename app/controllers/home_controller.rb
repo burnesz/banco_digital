@@ -32,7 +32,6 @@ class HomeController < ApplicationController
          conta = Conta.create(numeroConta: "#{cpf.slice(0, 5)}-#{tipo_conta_id}", idCliente: cliente_new.id, idTipoConta: tipo_conta.id, idAgencia: agencia.id, saldo: 0.00)
          conta.save
 
-         #redirect_to root_path+'?registro=1'
          flash[:title] = 'Registro feito com sucesso'
          flash[:message] = 'Entre com seu CPF e senha'
          flash[:classe] = 'success'

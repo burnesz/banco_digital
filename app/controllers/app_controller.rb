@@ -1,5 +1,9 @@
 class AppController < ApplicationController
     before_action :verificar_autenticacao
+    def agendamento
+    end
+    def agenda
+    end
     def pdf_extrato
         if params[:categoria]
             @extratos = query_extrato_where(params)
@@ -30,9 +34,33 @@ class AppController < ApplicationController
       
         send_data(pdf.render, filename: "extrato.pdf", type: "application/pdf", disposition: "inline")
     end
+    def csv_extrato
+
+        @extratos = all_extratos
+    
+        csv_data = CSV.generate(headers: true) do |csv|
+
+          csv << ["Data", "Nome Remetente", "Nome Destinatario", "Valor"]
+          
+          @extratos.each do |extrato|
+            csv << [extrato.data.strftime('%d/%m/%Y %H:%M:%S'), extrato.nome_remetente, extrato.nome_destinatario, extrato.valor]
+          end
+        end
+    
+        send_data(csv_data, filename: "relatorio_trasacaoes.csv", type: 'text/csv')
+    end
 
     def home
         @extratos = all_extratos(3)
+    end
+    
+    def conta
+
+        @cliente = Cliente.find_by(id: session[:id])
+        @conta_c = Conta.find_by(idCliente: session[:id], idTipoConta: 1)
+        @conta_p = Conta.find_by(idCliente: session[:id], idTipoConta: 2)
+        @agencia = Agencia.find_by(id: @conta_c.idAgencia)
+
     end
       
     def extrato

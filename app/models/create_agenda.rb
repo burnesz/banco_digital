@@ -1,0 +1,2 @@
+class CreateAgenda < ApplicationRecord
+end

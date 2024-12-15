@@ -4,6 +4,8 @@ ruby "3.3.6"
 
 gem 'carrierwave', '~> 2.0'
 
+gem 'csv'
+
 gem 'kaminari'
 
 gem 'prawn-rails'

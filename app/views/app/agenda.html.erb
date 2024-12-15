@@ -1,0 +1,40 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold ls-tight" href="#">Banco Digital</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-link" aria-current="page" href="/home">Home</a>
+        <a class="nav-link" href="/conta">Conta</a>
+        <a class="nav-link" href="extrato">Extrato</a>
+        <a class="nav-link active" href="/agenda">Agenda</a>
+        <a class="nav-link ms-auto" href="/sair">Sair</a>
+      </div>
+    </div>
+  </div>
+</nav>
+<section class="background-radial-gradient overflow-hidden background-app">
+      <div class="container-fluid mx-0">
+            <div class="m-5 card bg-glass me-5">
+                <div class="card-body px-4 py-5 px-md-5">
+                  <div class="row d-flex justify-content-between mb-3">
+                    <div class="col-11 ">
+                      <h1 class="my-2 display-5 fw-bold ls-tight" style="color: #11111">Agendamentos</h1>
+                    </div>
+                    <div class="col-1">
+                      <%= link_to "CRIAR", pdf_extrato_path(categoria: params[:categoria], search: params[:search]), target: "_blank", class:"btn btn-outline-dark" %>
+                    </div>
+                  <div class="row">
+                    <div class="col-8">
+                    </div>
+                  </div>
+                  </div><br><br>
+                  <div class="row">
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
