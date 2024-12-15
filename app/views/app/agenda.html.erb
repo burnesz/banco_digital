@@ -24,14 +24,14 @@
             <h1 class="my-2 display-5 fw-bold ls-tight" style="color: #11111">Agendamentos</h1>
           </div>
           <div class="col-1">
-            <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">NOVO</button>
+            <button type="button" class="btn btn-outline-success mt-4" data-bs-toggle="modal" data-bs-target="#staticBackdrop">NOVO</button>
           </div>
         </div>
         <div class="row">
           <div class="col-8">
           </div>
         </div>
-        <br><br>
+        <br>
         <div class="row">
           <table class="table table-light table-striped">
             <thead>
@@ -55,12 +55,14 @@
                 </div>
                 <div class="col-6">
                   <%= link_to "Delete", agenda_path(id: agenda.id, data: agenda.data, descricao: agenda.descricao, valor: agenda.valor, acao: 'excluir'), class: "btn btn-outline-danger" %></div>
+                </div>
               </div>
               </td>
               </tr>
             <% end %>
             </tbody>
           </table>
+          <%= paginate @agendas %>
         </div>
       </div>
     </div>

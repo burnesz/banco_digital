@@ -184,6 +184,7 @@ class AppController < ApplicationController
                     'INNER JOIN clientes cd ON cd_ct.idCliente = cd.id'
                   )
                   .where('extratos.idRemetente = ? OR extratos.idDestinatario = ?', session[:id_conta], session[:id_conta])
+                  .order('extratos.created_at DESC')
         limite ? query.limit(limite) : query
     end
     def converte_data(data)
