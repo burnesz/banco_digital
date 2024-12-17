@@ -30,7 +30,7 @@ class AppController < ApplicationController
         end
     end
     def agenda
-        @agendas = Agenda.where('agendas.id_conta = ?', session[:id_conta]).all.page(params[:page]).per(5)
+        @agendas = Agenda.where('agendas.id_conta = ?', session[:id_conta]).order('agendas.created_at DESC').all.page(params[:page]).per(5)
     end
     def pdf_extrato
         if params[:categoria]
@@ -97,7 +97,7 @@ class AppController < ApplicationController
       
     def extrato
 
-        if params[:categoria]
+        if params[:categoria] && params[:search].present?
             @extratos = query_extrato_where(params)
         else
             @extratos = all_extratos.page(params[:page]).per(5)
