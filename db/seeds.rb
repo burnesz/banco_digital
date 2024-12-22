@@ -7,3 +7,14 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+# Seeds para Agencias
+Agencia.create([
+  {nome: 'Ag. Teresina', endereco: 'Av. das hortas, 255 - Teresina, PI'},
+  {nome: 'Ag. Fortaleza', endereco: 'Av. dos hamburgues, 522 - Fortaleza, CE'}
+])
+
+# Seeds para TipoConta
+TipoConta.create([
+  {descricao: 'Conta Corrente'},
+  {descricao: 'Conta Poupança'}
+])
