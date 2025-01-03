@@ -5,11 +5,12 @@
 ![Pix transferência](app/assets/images/exemplos/pix.png)
 ![Extrato](app/assets/images/exemplos/extrato.png)
 
-Este projeto foi desenvolvido como parte da disciplina de **Desenvolvimento Web**, onde aprendi sobre **Ruby** e **Ruby on Rails**. O objetivo principal era criar um banco digital funcional, e implementei as seguintes funcionalidades:
+Este projeto foi desenvolvido como parte da disciplina de Desenvolvimento Web. O objetivo principal era criar um banco digital simples mas funcional e por exigência do professor tinha de ser feito com Ruby on Rails. Implementei as seguintes funcionalidades:
 
-- Transferência via PIX;
-- Extrato paginado;
-- Depósito na conta poupança.
+- Criação de conta através de tela de cadastro.
+- Autenticação de usuário para acesso ao app.
+- Transferência entre contas.
+- Agendamento e extrato de pagamentos paginados.
 
 ## 🛠️ Tecnologias e Ambiente de Desenvolvimento
 
